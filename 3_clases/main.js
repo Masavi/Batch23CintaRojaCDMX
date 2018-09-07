@@ -35,14 +35,14 @@ class Animal{
         return "El animal de "+this.tamanio+" esta en el trono";
     }
 
-    saludar(color){
+    /*saludar(color){
         return "El animal de color "+this.color+" saluda al animal de color "+color;
     }
 
     ladrar(perro){
         console.log("El animal de color "+this.color+" saluda al animal de color "+perro.getColor());
         console.log(perro.saludar(this.color));
-    }
+    }*/
 
 }
 
@@ -51,10 +51,14 @@ let sanBernardo = new Animal("Gigante", "Morado", "San Bernardo", "Judios" )
 
 console.log(perritoChihuahua.getColor());
 
-console.log(perritoChihuahua.correr());
+/*console.log(perritoChihuahua.correr());
 
 console.log(
     perritoChihuahua.saludar(sanBernardo.getColor())
 );
 
 perritoChihuahua.ladrar(sanBernardo)
+*/
+
+perritoChihuahua.setColor("Naranja")
+console.log(perritoChihuahua.getColor());
