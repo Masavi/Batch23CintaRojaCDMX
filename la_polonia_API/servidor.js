@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const clienteMongo = require('./clienteMongo.js');
 
 const app = express();
 
