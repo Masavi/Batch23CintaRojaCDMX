@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const clienteMongo = require('./clienteMongo.js');
-
+const {Alumno, Curso} = require('./clienteMongo.js');
 const app = express();
 
 // parse application/x-www-form-urlencoded
@@ -13,30 +12,39 @@ app.use(bodyParser.json());
 // --------- CRUD Alumnos ---------
 // CREATE  ->  Post One
 app.post('/api/alumnos/', (request, response) => {
-    let json = request.body;
+    let jsonCliente = request.body;
 
-    // -> Cosas mágicas y ancestrales...
-    // jsonResultado -> res.send(jsonResultado);
+    //const nuevoAlumno = Alumno(jsonCliente);
+    const nuevoAlumno = Alumno(jsonCliente);
 
-    response
-        .status(201)
-        .send({
-            "menssage": "Alumno creado exitosamente",
-            "body": json
-        });
+    nuevoAlumno
+        .save((error, alumno)=>{
+            response
+                .status(201)
+                .send({
+                    "menssage": "Alumno creado exitosamente",
+                    "body": alumno,
+                    "error": error
+                })
+        })
 });
 
 // READ    ->  Get All
 app.get('/api/alumnos/', (request, response) => {
 
-    // Ir a la base de datos y pedir un json con todos los alumnos...
-    // guardarlo en un objeto (jsonResultado)
-    // -> res.send(jsonResult)
-
-    response.status(200).send({
-        "message": "Lista de alumnos obtenida exitosamente",
-        "body": {"alumno":"prueba"}
-    });
+    Alumno
+    .find()
+    .exec()
+    .then( jsonResultado => {
+        response
+            .status(200)
+            .send({
+                "message": "Lista de alumnos obtenida exitosamente",
+                "body": jsonResultado
+        });
+    })
+    .catch( error => console.log(error));
+        
 });
 
 
@@ -44,39 +52,53 @@ app.get('/api/alumnos/', (request, response) => {
 app.get('/api/alumnos/:id/', (req, res)=>{
     const alumnoId = req.params.id;
 
-    // Pedir a la base de datos el alumno con id = alumnoId
-    // mandarle al cliente el alumno con el ID solicitado
-
-    res.status(200).send({
-        "message": "Alumno hallado exitosamente",
-        "body": {"nombre": "Mauricio Saavedra"}
-    });
+    Alumno
+        .findById(alumnoId)
+        .exec()
+        .then( alumno => {
+            res.status(200).send(alumno);
+        })
+        .catch( error => {
+            res.status(404).send(error);
+        })
 });
 
 // UPDATE  ->  Put One
 app.put('/api/alumnos/:id/', (req, res)=>{
     const alumnoId = req.params.id;
 
-    // Pediría a la base de datos que modifique al alumno con id = alumnoId
-    // Mostraría al cliente los datos del alumno modificado
-
-    res.status(200).send({
-        "message": "Alumno modificado exitosamente",
-        "body": {"nombre": "Alumno Modificado"}
-    });
+    Alumno 
+        .findByIdAndUpdate(
+            alumnoId,
+            {$set: req.body},
+            {new: true}
+        )
+        .exec()
+        .then( alumnoActualizado => {
+            res.status(200).send(alumnoActualizado);
+        })
+        .catch( error => {
+            res.status(400).send(`Error: ${error}`);
+        });
 });
 
 // DELLETE ->  Delete One
 app.delete('/api/alumnos/:id/', (req, res)=>{
     const alumnoId = req.params.id;
 
-    // Pediría a la base de datos que borre al alumno con id = alumnoId
-    // Respondería al cliente si su petición se procesó correctamente...
+    Alumno
+        .findByIdAndRemove(alumnoId)
+        .exec()
+        .then( resultado => {
+            res.status(204).send({
+                "message": "Alumno eliminado exitosamente",
+                "body": resultado
+            })
+        })
+        .catch( error => {
+            res.status(404).send(error)
+        })
 
-    res.status(204).send({
-        "message": "Alumno eliminado exitosamente",
-        "body": {}
-    });
 });
 
 // --------- CRUD Cursos ---------

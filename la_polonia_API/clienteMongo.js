@@ -11,10 +11,28 @@ mongoose.connect(
 );
 
 const Schema = mongoose.Schema;
-const ObjetId = mongoose.Schema.ObjectId;
+const ObjectId = mongoose.Schema.ObjectId;
 
 const alumnoSchema = Schema({
-    nombre: String,
-    edad: Number,
-    curso: []
+    alumno: ObjectId,
+    nombres: String,
+    apellidos: String,  
+    edad: {type: Number},//Number,
+    sexo: String,
+    curso: {
+      type: ObjectId,
+      ref: 'Curso'
+    }
 });
+
+const cursoSchema = Schema({
+    curso: ObjectId,
+    nombre: String,
+    descripcion: String,
+    precio: Number
+});
+
+const Alumno = mongoose.model('Alumno', alumnoSchema);
+const Curso = mongoose.model('Curso', cursoSchema);
+
+module.exports = {Alumno, Curso};
