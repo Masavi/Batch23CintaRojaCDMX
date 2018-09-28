@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
-import Componente from './components/Componente'; 
+
+// Javascript
+// const HolaMundo = require('./componentes/holamundo.js)
+
+// ES6
+//import HolaMundo from './components/holamundo';
+//import Tarjeta from './components/Tarjeta';
+//import Navbar from './components/NavbarComponent';
+import Contador from './components/ContadorComponent';
 
 class App extends Component {
+
   render() {
     return (
-      <div>
-          <h1>Soy el componente App</h1>
-          <h2>Mostrando a continuación otro componente...</h2>
-          <Componente />
+      <div className="container">
+        <Contador />
       </div>
     );
   }

@@ -4,6 +4,9 @@ import ReactDOM from 'react-dom';
 // ES6
 import App from './App';
 
+// Bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 // Javascript (Node)
 // const App = require('./App');
 
